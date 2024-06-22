@@ -3,7 +3,7 @@ services:
     build: ./database
     container_name: database
     environment:
-      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_ROOT_PASSWORD=Rootpassword.
       - MYSQL_DATABASE=customer
     ports:
       - '4000:3306'
