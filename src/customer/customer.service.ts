@@ -109,6 +109,7 @@ export class CustomerService {
   }
 
   async update(id: number, updateCustomerDto: UpdateCustomerDto) {
+    updateCustomerDto.customerAge = +updateCustomerDto.customerAge;
     if (updateCustomerDto.customerAge <= 0) throw new BadRequestException();
     const customer_id = await this.prismaService.$transaction(
       async (prisma) => {
