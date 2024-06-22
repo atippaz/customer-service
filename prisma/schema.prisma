@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model customer {
+  customer_id       Int      @id @default(autoincrement())
+  customer_name     String   @db.VarChar(45)
+  customer_favorite Int
+  customer_province Int
+  customer_age      Int
+  favorite          favorite @relation(fields: [customer_favorite], references: [favorite_id], onDelete: NoAction, onUpdate: NoAction, map: "fav_id")
+  province          province @relation(fields: [customer_province], references: [province_id], onDelete: NoAction, onUpdate: NoAction, map: "province_id")
+
+  @@index([customer_favorite], map: "fav_id_idx")
+  @@index([customer_province], map: "province_id_idx")
+}
+
+model favorite {
+  favorite_id   Int        @id @default(autoincrement())
+  favorite_name String     @db.VarChar(255)
+  customer      customer[]
+}
+
+model province {
+  province_id   Int        @id @default(autoincrement())
+  province_name String     @db.VarChar(100)
+  customer      customer[]
+}
