@@ -13,9 +13,9 @@ export class FavoriteController {
   constructor(private readonly favoriteService: FavoriteService) {}
 
   @Post('/create')
-  create(@Body() createFavoriteDto: CreateFavoriteDto) {
+  async create(@Body() payload: { name: string }) {
     try {
-      return this.favoriteService.create(createFavoriteDto);
+      return await this.favoriteService.create(payload.name);
     } catch (ex) {
       throw new InternalServerErrorException('An unexpected error occurred');
     }

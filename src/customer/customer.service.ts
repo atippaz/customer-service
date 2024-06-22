@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import {
   CreateCustomerDto,
   Customer,
@@ -12,6 +12,7 @@ import { PrismaService } from 'src/utils/prisma.service';
 export class CustomerService {
   constructor(private prismaService: PrismaService) {}
   async create(createCustomerDto: CreateCustomerDto) {
+    if (createCustomerDto.customerAge <= 0) throw new BadRequestException();
     const newUserId = await this.prismaService.$transaction(async (prisma) => {
       const { customer_id } = await prisma.customer.create({
         data: {
@@ -62,6 +63,9 @@ export class CustomerService {
     const [total, customers] = await Promise.all([
       this.prismaService.customer.count({ where: whereConditions }),
       this.prismaService.customer.findMany({
+        orderBy: {
+          customer_id: 'desc',
+        },
         where: whereConditions,
         skip,
         ...(limit && { take: limit }),
@@ -105,6 +109,7 @@ export class CustomerService {
   }
 
   async update(id: number, updateCustomerDto: UpdateCustomerDto) {
+    if (updateCustomerDto.customerAge <= 0) throw new BadRequestException();
     const customer_id = await this.prismaService.$transaction(
       async (prisma) => {
         const { customer_id } = await prisma.customer.update({
