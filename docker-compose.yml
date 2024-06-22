@@ -22,19 +22,19 @@ services:
     depends_on:
       - database
 
-  # webserver:
-  #   image: nginx
-  #   ports:
-  #     - '80:80'
-  #     - '443:443'
-  #   depends_on:
-  #     - serverapi
-  #   volumes:
-  #     - ./nginx.conf:/etc/nginx/nginx.conf
-  #     - /etc/letsencrypt/ssl:/cert
-  #     - ./html:/etc/nginx/html/
-  #   networks:
-  #     - servernetwork
+  webserver:
+    image: nginx
+    ports:
+      - '80:80'
+      - '443:443'
+    depends_on:
+      - serverapi
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - /etc/letsencrypt/ssl:/cert
+      - ./src/index.html:/etc/nginx/html/
+    networks:
+      - servernetwork
 
 networks:
   servernetwork:
