@@ -140,10 +140,11 @@ export class CustomerService {
     return customer_id;
   }
 
-  remove(id: number) {
-    this.prismaService.customer.delete({
+  async remove(id: number) {
+    const res = await this.prismaService.customer.delete({
       where: { customer_id: id },
     });
+    console.log(res);
     return true;
   }
 }

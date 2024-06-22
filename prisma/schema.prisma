@@ -21,7 +21,7 @@ model customer {
 }
 
 model favorite {
-  favorite_id   Int        @id @default(autoincrement())
+  favorite_id   Int        @id @unique(map: "favorite_id_UNIQUE") @default(autoincrement())
   favorite_name String     @db.VarChar(255)
   customer      customer[]
 }
