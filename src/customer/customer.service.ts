@@ -12,6 +12,7 @@ import { PrismaService } from 'src/utils/prisma.service';
 export class CustomerService {
   constructor(private prismaService: PrismaService) {}
   async create(createCustomerDto: CreateCustomerDto) {
+    createCustomerDto.customerAge = +createCustomerDto.customerAge;
     if (createCustomerDto.customerAge <= 0) throw new BadRequestException();
     const newUserId = await this.prismaService.$transaction(async (prisma) => {
       const { customer_id } = await prisma.customer.create({

@@ -1,8 +1,16 @@
 import { PartialType } from '@nestjs/mapped-types';
+import { IsNotEmpty } from 'class-validator';
 export class CreateCustomerDto {
+  @IsNotEmpty()
   customerName: string;
+
+  @IsNotEmpty()
   customerAge: number;
+
+  @IsNotEmpty()
   customerFavorite: number;
+
+  @IsNotEmpty()
   customerProvince: number;
 }
 
