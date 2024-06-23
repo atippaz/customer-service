@@ -4,6 +4,7 @@ import {
   Post,
   Body,
   InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 import { FavoriteService } from './favorite.service';
 import { CreateFavoriteDto } from './favorite.dto';
@@ -15,17 +16,25 @@ export class FavoriteController {
   @Post('/create')
   async create(@Body() payload: { name: string }) {
     try {
-      return await this.favoriteService.create(payload.name);
+      Logger.log(payload);
+      const res = await this.favoriteService.create(payload.name);
+      Logger.log(res);
+      return res;
     } catch (ex) {
+      Logger.error(ex);
       throw new InternalServerErrorException('An unexpected error occurred');
     }
   }
 
   @Get('/dropdown')
-  findAll() {
+  async findAll() {
     try {
-      return this.favoriteService.findAll();
+      Logger.log('/getdropdown');
+      const res = await this.favoriteService.findAll();
+      Logger.log(res);
+      return res;
     } catch (ex) {
+      Logger.error(ex);
       throw new InternalServerErrorException('An unexpected error occurred');
     }
   }

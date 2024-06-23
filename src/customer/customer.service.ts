@@ -83,11 +83,11 @@ export class CustomerService {
       data: customers.map((x) => {
         return {
           customerAge: x.customer_age,
-          customerFav: x.favorite.favorite_name,
+          customerFavorite: x.favorite.favorite_name,
           customerId: x.customer_id,
           customerName: x.customer_name,
           customerProvince: x.province.province_name,
-          customerFavId: x.favorite.favorite_id,
+          customerFavoriteId: x.favorite.favorite_id,
           customerProvinceId: x.province.province_id,
         };
       }),
@@ -102,7 +102,7 @@ export class CustomerService {
     });
     return {
       customerAge: res.customer_age,
-      customerFav: res.customer_favorite,
+      customerFavorite: res.customer_favorite,
       customerId: res.customer_id,
       customerName: res.customer_name,
       customerProvince: res.customer_province,

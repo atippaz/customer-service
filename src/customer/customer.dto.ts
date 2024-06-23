@@ -31,8 +31,8 @@ export class CustomerDisplayResult {
   customerName: string;
   customerId: number;
   customerAge: number;
-  customerFav: string;
-  customerFavId: number;
+  customerFavorite: string;
+  customerFavoriteId: number;
   customerProvinceId: number;
   customerProvince: string;
 }
@@ -47,6 +47,6 @@ export interface Customer {
   customerName: string;
   customerId: number;
   customerAge: number;
-  customerFav: number;
+  customerFavorite: number;
   customerProvince: number;
 }

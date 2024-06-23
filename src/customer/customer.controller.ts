@@ -8,6 +8,7 @@ import {
   Delete,
   InternalServerErrorException,
   Res,
+  Logger,
 } from '@nestjs/common';
 import { type Response } from 'express';
 import { CustomerService } from './customer.service';
@@ -23,10 +24,14 @@ export class CustomerController {
   constructor(private readonly customerService: CustomerService) {}
 
   @Post('/create')
-  create(@Body() createCustomerDto: CreateCustomerDto) {
+  async create(@Body() createCustomerDto: CreateCustomerDto) {
     try {
-      return this.customerService.create(createCustomerDto);
+      Logger.log(createCustomerDto);
+      const res = await this.customerService.create(createCustomerDto);
+      Logger.log(res);
+      return res;
     } catch (ex) {
+      Logger.error(ex);
       throw new InternalServerErrorException('An unexpected error occurred');
     }
   }
@@ -34,8 +39,12 @@ export class CustomerController {
   @Post('/getalluser')
   async findAll(@Body() query: FindAllUserDto, @Res() res: Response) {
     try {
-      return res.status(200).json(await this.customerService.findAll(query));
+      Logger.log(query);
+      const result = await this.customerService.findAll(query);
+      Logger.log(result);
+      return res.status(200).json(result);
     } catch (ex) {
+      Logger.error(ex);
       throw new InternalServerErrorException('An unexpected error occurred');
     }
   }
@@ -43,12 +52,13 @@ export class CustomerController {
   @Post('/getexcel')
   async excel(@Body() query: FindAllUserDto, @Res() res: Response) {
     try {
+      Logger.log('getExcel', query);
       const response = await this.customerService.findAll(query);
       const data = response.data.map((x) => {
         return {
           ชื่อ: x.customerName,
           อายุ: x.customerAge,
-          สิ่งที่ชื่นชอบ: x.customerFav,
+          สิ่งที่ชื่นชอบ: x.customerFavorite,
           ที่อยู่: x.customerProvince,
         };
       });
@@ -101,36 +111,49 @@ export class CustomerController {
       await workbook.xlsx.write(res);
       res.end();
     } catch (ex) {
+      Logger.error(ex);
       throw new InternalServerErrorException('An unexpected error occurred');
     }
   }
 
   @Get('/getuser/:id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     try {
-      return this.customerService.findOne(+id);
+      Logger.log(id);
+      const res = await this.customerService.findOne(+id);
+      Logger.log(res);
+      return res;
     } catch (ex) {
+      Logger.error(ex);
       throw new InternalServerErrorException('An unexpected error occurred');
     }
   }
 
   @Patch('/update/:id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateCustomerDto: UpdateCustomerDto,
   ) {
     try {
-      return this.customerService.update(+id, updateCustomerDto);
+      Logger.log(id, updateCustomerDto);
+      const res = await this.customerService.update(+id, updateCustomerDto);
+      Logger.log(res);
+      return res;
     } catch (ex) {
+      Logger.error(ex);
       throw new InternalServerErrorException('An unexpected error occurred');
     }
   }
 
   @Delete('/delete/:id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     try {
-      return this.customerService.remove(+id);
+      Logger.log(id);
+      const res = await this.customerService.remove(+id);
+      Logger.log(res);
+      return res;
     } catch (ex) {
+      Logger.error(ex);
       throw new InternalServerErrorException('An unexpected error occurred');
     }
   }
